@@ -1666,6 +1666,27 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#stop", function () {
+		it("does not try to stop the animation if it wasn't set before", function () {
+			map.setView([50, 50], 10);
+			map.stop = sinon.spy();
+			map.panTo([10, 10], 10);
+			expect(map.stop.called).to.not.be.ok();
+		});
+
+		it("stops the execution of the flyTo animation", function () {
+			map.setView([0, 0]);
+			var location = L.latLng([50, 30]);
+			expect(map.flyTo(location).stop().getCenter().lat).to.eql(0);
+		});
+
+		it("stops the execution of the panTo animation", function () {
+			map.setView([0, 0]);
+			var location = L.latLng([50, 30]);
+			expect(map.panTo(location).stop().getCenter().lat).to.eql(0);
+		});
+	});
+
 	describe("#DOM events", function () {
 		beforeEach(function () {
 			map.setView([0, 0], 0);
